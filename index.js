@@ -20,17 +20,34 @@ const app = express();
 
 // middleware
 app.use(express.json());
+
+// CORS configuration
+app.use((req, res, next) => {
+  // Remove double slashes from URL
+  if (req.url.indexOf('//') !== -1) {
+    req.url = req.url.replace(/\/+/g, '/');
+  }
+  
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 app.use(cors({
-  origin: true,
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
   credentials: true,
-  optionsSuccessStatus: 204,
-  preflightContinue: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
-// Enable CORS pre-flight for all routes
-app.options('*', cors());
+// Handle OPTIONS requests explicitly
+app.options('*', (req, res) => {
+  res.status(204).send();
+});
 
 // Connect to database
 ConnectDb();
