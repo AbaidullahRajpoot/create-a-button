@@ -21,22 +21,17 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: ['https://create-a-button.vercel.app', 'https://create-a-button-2.vercel.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  origin: '*',
+  methods: [
+    'GET',
+    'POST',
+  ],
+  allowedHeaders: [
+    'Content-Type',
+  ],
   credentials: true,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 204,
 }));
-
-// Make sure this comes BEFORE your routes
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://create-a-button.vercel.app');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
 
 // Connect to database
 ConnectDb();
