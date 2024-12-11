@@ -21,11 +21,17 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'https://create-a-button-2.vercel.app',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: 'https://create-a-button.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
   credentials: true,
   optionsSuccessStatus: 204,
+  preflightContinue: false
 }));
+
+// For preflight requests
+app.options('*', cors());
 
 // Connect to database
 ConnectDb();
