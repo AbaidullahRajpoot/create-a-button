@@ -20,34 +20,12 @@ const app = express();
 
 // middleware
 app.use(express.json());
-
-// CORS configuration
-app.use((req, res, next) => {
-  // Remove double slashes from URL
-  if (req.url.indexOf('//') !== -1) {
-    req.url = req.url.replace(/\/+/g, '/');
-  }
-  
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  next();
-});
-
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  origin: 'https://create-a-button-2.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 204,
 }));
-
-// Handle OPTIONS requests explicitly
-app.options('*', (req, res) => {
-  res.status(204).send();
-});
 
 // Connect to database
 ConnectDb();
