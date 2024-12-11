@@ -21,11 +21,16 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   credentials: true,
   optionsSuccessStatus: 204,
+  preflightContinue: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Enable CORS pre-flight for all routes
+app.options('*', cors());
 
 // Connect to database
 ConnectDb();
