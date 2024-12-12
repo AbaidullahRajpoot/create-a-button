@@ -20,19 +20,18 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors({
-  origin: '*',
-  methods: [
-    'GET',
-    'POST',
-  ],
 
-  allowedHeaders: [
-    'Content-Type',
-  ],
-  credentials: true,
-  optionsSuccessStatus: 204,
-}));
+// CORS Configuration
+app.use(cors());
+app.options('*', cors());
+
+const allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();  
+}
+app.use(allowCrossDomain);
 
 // Connect to database
 ConnectDb();
