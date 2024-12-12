@@ -20,7 +20,12 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['https://create-a-button-2.vercel.app', 'https://create-button-admin-panel.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+  exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
+}));
 
 // Connect to database
 ConnectDb();
