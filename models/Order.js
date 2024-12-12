@@ -74,6 +74,10 @@ const orderSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "processing", "delivered","cancel"],
     },
+    image: {
+      url: String,
+      public_id: String
+    },
   },
   {
     timestamps: true,

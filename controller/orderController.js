@@ -1,6 +1,9 @@
 const { secret } = require("../config/secret");
 const stripe = require("stripe")(secret.stripe_key);
 const Order = require("../models/Order");
+const { orderServices } = require("../services/order.service");
+const multer = require('multer');
+const upload = multer();
 
 // create-payment-intent
 module.exports.paymentIntent = async (req, res) => {
@@ -24,6 +27,16 @@ module.exports.paymentIntent = async (req, res) => {
 module.exports.addOrder = async (req, res) => {
   try {
     const orderItems = req.body;
+    
+    // If there's an image file
+    if (req.file) {
+      const imageResult = await orderServices.uploadOrderImage(req.file.buffer);
+      orderItems.image = {
+        url: imageResult.url,
+        public_id: imageResult.public_id
+      };
+    }
+
     const newOrders = new Order(orderItems);
     const order = await newOrders.save();
 
@@ -34,6 +47,11 @@ module.exports.addOrder = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error adding order",
+      error: error.message
+    });
   }
 };
 

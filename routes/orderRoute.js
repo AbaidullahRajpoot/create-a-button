@@ -1,4 +1,7 @@
 const express = require("express");
+const multer = require('multer');
+const upload = multer();
+
 const {
   paymentIntent,
   addOrder,
@@ -14,7 +17,7 @@ const router = express.Router();
 router.get("/orders", getOrders);
 // add a create payment intent
 router.post("/create-payment-intent", paymentIntent);
-router.post("/addOrder", addOrder);
+router.post("/addOrder", upload.single('image'), addOrder);
 // single order
 router.get("/:id", getSingleOrder);
 
