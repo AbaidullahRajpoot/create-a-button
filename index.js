@@ -20,18 +20,13 @@ const app = express();
 
 // middleware
 app.use(express.json());
+const corsOptions = {
+  origin: 'https://create-a-button-2.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-// CORS Configuration
-app.use(cors());
-app.options('*', cors());
-
-const allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();  
-}
-app.use(allowCrossDomain);
+app.use(cors(corsOptions));
 
 // Connect to database
 ConnectDb();
