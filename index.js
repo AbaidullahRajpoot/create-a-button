@@ -20,18 +20,22 @@ const app = express();
 
 // middleware
 app.use(express.json());
-app.use(cors({
-  origin: '*',
-  methods: [
-    'GET',
-    'POST',
-  ],
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');  // Temporarily allow all origins for debugging
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', '*');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
-  allowedHeaders: [
-    'Content-Type',
-  ],
+app.use(cors({
+  origin: '*',  // Temporarily allow all origins for debugging
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200
 }));
 
 // Connect to database
