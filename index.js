@@ -22,10 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: [
-    'https://create-button-admin-panel.vercel.app',
-    'https://create-a-button.vercel.app',
-    'https://create-a-button-2.vercel.app',
-    'http://localhost:3000'
+    'https://create-button-admin-panel.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true,
