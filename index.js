@@ -21,9 +21,18 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'https://create-a-button-2.vercel.app',
-}));
+  origin: '*',
+  methods: [
+    'GET',
+    'POST',
+  ],
 
+  allowedHeaders: [
+    'Content-Type',
+  ],
+  credentials: true,
+  optionsSuccessStatus: 204,
+}));
 
 // Connect to database
 ConnectDb();
