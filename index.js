@@ -22,15 +22,16 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: '*',
-  methods: [
-    'GET',
-    'POST',
-  ],
-
+  methods: ['GET', 'PUT', 'POST'],
   allowedHeaders: [
     'Content-Type',
+    'Cache-Control',
+    'Pragma',
+    'Origin',
+    'Authorization',
+    'X-Requested-With'
   ],
-  credentials: true, 
+  credentials: true,
   optionsSuccessStatus: 204,
 }));
 
