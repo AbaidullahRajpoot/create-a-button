@@ -7,6 +7,9 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    orderId: {
+      type: String,
+    },
     invoice: {
       type: Number,
       required: false,
@@ -69,6 +72,15 @@ const orderSchema = new mongoose.Schema(
     paymentIntent: {
       type: Object,
       required: false,
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    paymentStatus: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "success", "failed"],
     },
     status: {
       type: String,

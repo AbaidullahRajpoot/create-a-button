@@ -26,9 +26,44 @@ module.exports.paymentIntent = async (req, res) => {
 };
 module.exports.addOrder = async (req, res) => {
   try {
-    const orderItems = req.body;
+    const orderItems = Object.assign({}, req.body);
     
-    // If there's an image file
+    // Parse the cart string into an object
+    if (orderItems.cart) {
+      orderItems.cart = JSON.parse(orderItems.cart);
+    }
+    
+    // Check if order exists using orderId instead of _id
+    if (orderItems.orderId) {
+      // Try to find existing order
+      const existingOrder = await Order.findOne({ orderId: orderItems.orderId });
+      
+      if (existingOrder) {
+        // Handle image upload for update
+        if (req.file) {
+          const imageResult = await orderServices.uploadOrderImage(req.file.buffer);
+          orderItems.image = {
+            url: imageResult.url,
+            public_id: imageResult.public_id
+          };
+        }
+
+        // Update existing order
+        const updatedOrder = await Order.findOneAndUpdate(
+          { orderId: orderItems.orderId },
+          orderItems,
+          { new: true }
+        );
+
+        return res.status(200).send({
+          success: true,
+          message: "Order updated successfully",
+          order: updatedOrder,
+        });
+      }
+    }
+
+    // If no existing order found or no orderId provided, create new order
     if (req.file) {
       const imageResult = await orderServices.uploadOrderImage(req.file.buffer);
       orderItems.image = {
@@ -49,7 +84,7 @@ module.exports.addOrder = async (req, res) => {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Error adding order",
+      message: "Error adding/updating order",
       error: error.message
     });
   }
@@ -69,7 +104,7 @@ exports.getSingleOrder = async (req, res, next) => {
 // updateOrderStatus
 exports.updateOrderStatus = async (req, res) => {
   const newStatus = req.body.status;
-  console.log('newStatus',newStatus)
+  console.log('newStatus', newStatus)
   try {
     await Order.updateOne(
       {
