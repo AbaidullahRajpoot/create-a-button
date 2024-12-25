@@ -22,7 +22,6 @@ const productSchema = mongoose.Schema({
     required: true,
     trim:true,
   },
-  tags: [String],
   image:{
     type:String,
     required: true,
@@ -44,11 +43,6 @@ const productSchema = mongoose.Schema({
     required: false,
     default: 0,
   },
-  relatedImages: [{
-    type: String,
-    required: false,
-    validate: [valid.isURL, "wrong url"]
-  }],
   description: {
     type: String,
     required: true,
@@ -69,7 +63,7 @@ const productSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  colors:[String],
+  sizes:[String],
   type:String,
   itemInfo:String,
   status: {

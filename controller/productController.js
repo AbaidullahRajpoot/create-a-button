@@ -6,10 +6,10 @@ const ApiError = require("../errors/api-error");
 // addAllProducts
 module.exports.addProduct = async (req, res, next) => {
   try {
-    const imageURLs = [req.body.image, ...req.body.relatedImages];
+    // const imageURLs = [req.body.image, ...req.body.relatedImages];
     const newProduct = new Product({
       ...req.body,
-      relatedImages: imageURLs,
+      image: req.body.image,
     });
     await newProduct.save();
     const { _id: productId, brand, category } = newProduct;
