@@ -6,18 +6,15 @@ const ApiError = require("../errors/api-error");
 // addAllProducts
 module.exports.addProduct = async (req, res, next) => {
   try {
+    console.log(req.body);
     // const imageURLs = [req.body.image, ...req.body.relatedImages];
     const newProduct = new Product({
       ...req.body,
       image: req.body.image,
     });
     await newProduct.save();
-    const { _id: productId, brand, category } = newProduct;
-    //update Brand
-    await Brand.updateOne(
-      { _id: brand.id },
-      { $push: { products: productId } }
-    );
+    const { _id: productId, category } = newProduct;
+   
     //Category update
     await Category.updateOne(
       { _id: category.id },
