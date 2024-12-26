@@ -22,6 +22,15 @@ const productSchema = mongoose.Schema({
     required: true,
     trim:true,
   },
+  backSideType:[{
+    image:String,
+    name:String,
+  }],
+  // relatedImages: [{
+  //   type: String,
+  //   required: false,
+  //   validate: [valid.isURL, "wrong url"]
+  // }],
   image:{
     type:String,
     required: true,

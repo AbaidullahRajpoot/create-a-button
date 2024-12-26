@@ -11,6 +11,7 @@ module.exports.addProduct = async (req, res, next) => {
     const newProduct = new Product({
       ...req.body,
       image: req.body.image,
+      backSideType:req.body.backSideType,
     });
     await newProduct.save();
     const { _id: productId, category } = newProduct;
